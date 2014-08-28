@@ -1,14 +1,10 @@
-\documentclass[columnlines]{papertex}
+\documentclass{papertex}
 
 % \documentclass[oneside]{papertex}%{book}
 % %http://www.latex-community.org/forum/viewtopic.php?f=28&t=851
 % %http://www.ctan.org/tex-archive/macros/latex/contrib/papertex
 % %http://nachollopis.com/papertex/example.pdf
 % 
-% 
-% % paper layout for screen reading
-% %\usepackage[paperwidth=15cm,paperheight=10cm,margin=5mm]{geometry} % 
- 
 % pdflatex options
 \usepackage[unicode]{hyperref}
 \newcommand{\email}[1]{$<$\href{mailto:#1}{#1}$>$}
@@ -50,10 +46,11 @@
 \usepackage{wasysym} % smileys
 
 \renewcommand{\logo}{\mylogo}
+\renewcommand{\minilogo}{}
 
 % shorts
 
-\newcommand{\scr}{scr\en{atcher}\ru{этчер}}
+\newcommand{\scr}{\en{scratcher}\ru{скрэтчер}}
 
 \newcommand{\internet}{\en{Internet}\ru{Интернет}} 
 
@@ -62,3 +59,6 @@
 \newcommand{\authorPonyatov}{\authorandplace{\en{Dmitry
 Ponyatov}\ru{Дмитрий Понятов}}{\email{dponyatov@gmail.com}}}
 
+\newcommand{\term}[1]{\emph{#1}}
+
+\newcommand{\linux}{Linux}
