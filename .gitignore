@@ -1,4 +1,7 @@
 /tmp/
-/*.synctex.gz
 *~
 *.swp
+*.aux
+*.log
+*.out
+*synctex*
