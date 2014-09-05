@@ -30,3 +30,5 @@
 \newcommand{\Scr}{Скрэтчер}
 \newcommand{\scr}{скрэтчер}
 \newcommand{\internet}{Internet}
+
+\newcommand{\term}[1]{\emph{#1}}
