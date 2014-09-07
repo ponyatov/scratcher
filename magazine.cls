@@ -25,6 +25,32 @@
 
 % misc
 \RequirePackage{wasysym} % smileys
+\RequirePackage[svgnames]{xcolor}
+
+% magazine specific
+\newcommand{\article}[4]{
+\section{\textit{\textcolor{blue}{#1}}\\#2}
+\begin{multicols}{2}
+#3
+
+\textit{#4}
+\end{multicols}
+}
+
+\newcommand{\subarticle}[1]{
+\end{multicols}
+\subsection{#1}
+\begin{multicols}{2}
+}
+
+\newcommand{\subsubarticle}[1]{
+\end{multicols}
+\subsubsection{#1}
+\begin{multicols}{2}
+}
+
+% program listings & software using manuals
+\RequirePackage{menukeys}
 
 % shorts
 \newcommand{\Scr}{Скрэтчер}
@@ -32,3 +58,4 @@
 \newcommand{\internet}{Internet}
 
 \newcommand{\term}[1]{\emph{#1}}
+\newcommand{\cp}[1]{\href{#1}{копипаста}}
