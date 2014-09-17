@@ -59,3 +59,6 @@
 
 \newcommand{\term}[1]{\emph{#1}}
 \newcommand{\cp}[1]{\href{#1}{копипаста}}
+
+\newcommand{\linux}{Linux}
+\newcommand{\emlinux}{em\linux}
