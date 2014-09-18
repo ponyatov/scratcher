@@ -1,0 +1,2 @@
+tmpfs /home/user/cross/tmp tmpfs auto,uid=user,gid=user 0 0
+tmpfs /home/user/cross/src tmpfs auto,uid=user,gid=user 0 0

@@ -30,27 +30,24 @@
 % magazine specific
 \newcommand{\article}[4]{
 \section{\textit{\textcolor{blue}{#1}}\\#2}
-\begin{multicols}{2}
+%\begin{multicols}{2}
 #3
 
 \textit{#4}
-\end{multicols}
+%\end{multicols}
 }
 
 \newcommand{\subarticle}[1]{
-\end{multicols}
+%\end{multicols}
 \subsection{#1}
-\begin{multicols}{2}
+%\begin{multicols}{2}
 }
 
 \newcommand{\subsubarticle}[1]{
-\end{multicols}
+%\end{multicols}
 \subsubsection{#1}
-\begin{multicols}{2}
+%\begin{multicols}{2}
 }
-
-% program listings & software using manuals
-\RequirePackage{menukeys}
 
 % shorts
 \newcommand{\Scr}{Скрэтчер}
@@ -62,3 +59,23 @@
 
 \newcommand{\linux}{Linux}
 \newcommand{\emlinux}{em\linux}
+
+\newcommand{\ram}{RAM}
+
+% program listings & software using manuals
+
+\RequirePackage{menukeys}
+
+\RequirePackage{listings}
+
+\lstset{
+extendedchars=true,inputencoding=utf8, % i18n
+frame=single, % show frames around
+numbers=left, numberstyle=\small,numbersep=1mm,% line numbering
+tabsize=4, % tab style
+keywordstyle=\color{blue}\texttt,
+commentstyle=\color{magenta}\texttt,
+showspaces=false
+}
+
+\newcommand{\file}[1]{\textbf{#1}}

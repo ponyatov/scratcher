@@ -1,0 +1,1 @@
+user@builder: make [-f Makefile] <pacname1> [<packname2>...]
