@@ -37,7 +37,7 @@ Win\-dows\-ом;
 AllWinner/Tegra/\ldots}.
 
 \emlinux\ очень широко применяется на рынке мобильных устройств\footnote{\ в
-т.ч. является основой Android}, и устройств интенсивно использующих сетевые
+т.ч. является основой Android}, и ус\-тройств интенсивно использующих сетевые
 протоколы (роутеры, медиацентры).
 
 \subarticle{Требования к системе сборки (\file{BUILD})}
@@ -74,15 +74,25 @@ AllWinner/Tegra/\ldots}.
 вспомогательную работу.
 
 Пакеты запускаются по своему имени вручную с помощью команды
-\lstinputlisting{00_makesample.rc}
+\lstinputlisting{00/makesample.rc}
 
-\subarticle{Структура системы \file{cross}}
+\subarticle{Файловая структура проекта}
 
 Получите последнюю верию системы \file{cross}\ командой:
 
-\lstinputlisting[title=git clone]{00_gitclone.rc}
+\lstinputlisting[title=git clone]{00/gitclone.rc}
 
-\subsubarticle{скрипт генерации \file{Makefile}}
+\begin{tabular}{l l}
+gz/ & локальное зеркало архивов исходных текстов \\
+src/ & временный каталог рапаковки исходников \\
+tmp/ & каталог out-of-tree сборки пакетов \\
+build/ & каталог установки \$(BUILD)-части пакетов \\
+\$(TARGET)/ & \file{rootfs}\ целевой системы \\
+user/ & \\
+cross/mk.rc & \\
+\end{tabular}
+
+\subsubsection{\file{mk.rc}: скрипт генерации \file{Makefile}}
 
 Главный \file{Makefile}\ генерируется по частям скриптом:
 
@@ -91,21 +101,19 @@ AllWinner/Tegra/\ldots}.
 Это было сделано для удобства вставки частей (.mk файлы) в документацию, в т.ч.
 и в эту статью.
 
-\subsubarticle{head.mk}
-
-Задаются:
+\subsubsection{cross/head.mk}
 
 \begin{itemize}
-  \item[\file{HW}] железка, на которой будет запускаться
-  \item[\file{APP}] приложение 
+  \item{\file{HW}} железка, на которой будет запускаться
+  \item{\file{APP}} приложение 
 \end{itemize}
 
-В \file{config/hw/\$(HW).mk}\ прописываются перемнные:
+Во вложенных файлах прописываются переменные:
 
 \begin{itemize}
-  \item[\file{ARCH}] архитектура железки
-  \item[\file{CPU}] процессор и 
-  \item[\file{TARGET}] \term{триплет целевой платформы} 
+  \item{\file{ARCH}} архитектура железки
+  \item{\file{CPU}} процессор и 
+  \item{\file{TARGET}} \term{триплет целевой платформы} 
 \end{itemize}
 
 \lstinputlisting[title=head.mk]{../cross/head.mk}
@@ -114,7 +122,9 @@ AllWinner/Tegra/\ldots}.
 
 \lstinputlisting[title=config/arch/i386.mk]{../cross/config/arch/i386.mk}
 
-\subsubarticle{каталоги, пакет \file{dirs}}
+\lstinputlisting[title=config/cpu/i486.mk]{../cross/config/cpu/i486.mk}
+
+\subsubsection{\file{dirs}: создание рабочих каталогов}
 
 \begin{itemize}
   \item[\file{GZ}] зеркало архивов исходных текстов
@@ -129,61 +139,50 @@ AllWinner/Tegra/\ldots}.
 
 \lstinputlisting[title=dirs.mk]{../cross/dirs.mk}
 
-\subsubarticle{версии пакетов}
+\subsubsection{версии пакетов}
 
 В этой части прописаны версии пакетов.
 
 \lstinputlisting[title=versions.mk]{../cross/versions.mk}
 
-\subsubarticle{пакеты}
+\subsubsection{пакеты}
 
 Здесь прописаны полные имена пакетов вместе с версиями. 
 
 \lstinputlisting[title=packages.mk]{../cross/packages.mk}
 
-\subsubarticle{комманды}
+\subsubsection{команды}
 
 Макросы команд, используются далее:
 
 \lstinputlisting[title=commands.mk]{../cross/commands.mk}
 
-\subsubarticle{очистка \file{tmpfs}-каталогов}
+\subsubsection{\file{*clean}: очистка дерева проекта}
 
 Для каталогов, прописанных в \file{/etc/fstab}\ как \file{tmpfs}\ (файловая
-система в \ram) для экономии ресурса флешки и ускорения сборки:
+система в \ram) для экономии ресурса флешки и максимального ускорения сборки:
 
-\lstinputlisting[title=/etc/fstab]{00_fstab.txt}
+\lstinputlisting[title=/etc/fstab]{00/fstab.txt}
 
 существует пакет \file{ramclean}, выполняющий их очистку.
 
 Если вы используете такие каталоги, добавляете его вызов в конце вторым+ 
 пакетом, чтобы освободить \ram\ для следующей сборки. 
 
-\lstinputlisting[title=ramclean.mk]{../cross/ramclean.mk}
+\lstinputlisting[title=clean.mk]{../cross/clean.mk}
 
-\subsubarticle{правила распаковки архивов исходниов}
+\subsubsection{\file{debian}: установка пакетов Debian Linux}
 
-\lstinputlisting[title=srcrules.mk]{../cross/srcrules.mk}
+Перед сборкой нужно поставить несколько пакетов разработчика:
 
-\subarticle{Сборка \file{BUILD}-части}
+\lstinputlisting[title=debian.mk]{../cross/debian.mk}
 
-\subsubarticle{пакет \file{gz}}
-
-Пакет \file{gz}\ выполняет загрузку из \internet а архивов исходных текстов
-пакетов. 
-
-Длительная и потребляющая трафик операция, нужен онлайн. По-хорошему архив
-исходников тут было бы желательно загружать через пиринговые сети, а не
-нагружать зеркала.
-
-\lstinputlisting[title=gz.mk]{../cross/gz.mk}
-
-\subsubarticle{набор перемнных для \file{configure}}
+\subsubsection{набор макросов для \file{configure}}
 
 \begin{itemize}
-  \item[\file{CFG}] общая часть запуска \file{configure}
-  \item[\file{BCFG}] для \file{BUILD}-пакетов
-  \item[\file{TCFG}] для \file{TAGET}-пакетов
+  \item{\file{CFG}} общая часть запуска \file{configure}
+  \item{\file{BCFG}} для \file{BUILD}-пакетов
+  \item{\file{TCFG}} для \file{TARGET}-пакетов
 \end{itemize}
 
 \begin{itemize}
@@ -194,7 +193,24 @@ AllWinner/Tegra/\ldots}.
 
 \lstinputlisting[title=cfg.mk]{../cross/cfg.mk}
 
-\subsubarticle{binutils}
+\subsubsection{\file{gz}: зеркалирование исходников}
+
+Пакет \file{gz}\ выполняет загрузку из \internet а архивов исходных текстов
+пакетов. 
+
+Длительная и потребляющая трафик операция, нужен онлайн. По-хорошему архив
+исходников тут было бы желательно загружать через пиринговые сети, а не
+нагружать зеркала.
+
+\lstinputlisting[title=gz.mk]{../cross/gz.mk}
+
+\subsubsection{правила распаковки архивов исходников}
+
+\lstinputlisting[title=srcrules.mk]{../cross/srcrules.mk}
+
+\subarticle{Сборка \file{BUILD}-части}
+
+\subsubsection{\file{binutils}: ассемблер и линкер}
 
 Пакет \file{binutils}\ включает ассемблер, линкер и вспомогательные программы
 для работы с объектными файлами в формате \term{ELF}. 
@@ -206,5 +222,107 @@ AllWinner/Tegra/\ldots}.
 \end{itemize}
 
 \lstinputlisting[title=binutils.mk]{../cross/binutils.mk}
+
+\subsubsection{\file{cclibs}: библиотеки поддержки GCC}
+
+\lstinputlisting[title=cclibs.mk]{../cross/cclibs.mk}
+
+\subsubsection{\file{gcc}: сборка компилятора GCC}
+
+\lstinputlisting[title=gcc.mk]{../cross/gcc.mk}
+
+\subarticle{Сборка базовой целевой системы}
+
+\subsubsection{\file{kernel}: ядро Linux}
+
+\lstinputlisting[title=kernel.mk]{../cross/kernel.mk}
+
+\subsubsection{\file{libc}: главная библиотека uClibc}
+
+\lstinputlisting[title=libc.mk]{../cross/libc.mk}
+
+\subsubsection{\file{bb}: пакет UNIX-утилит BusyBox}
+
+\lstinputlisting[title=busybox.mk]{../cross/busybox.mk}
+
+\subsection{\file{root}: Генерация файловой системы}
+
+\subsubsection{\file{boot}: сборка загрузчика}
+
+\lstinputlisting[title=boot.mk]{../cross/boot.mk}
+
+\subsubsection{\file{user}: сборка пользовательского ПО}
+
+\lstinputlisting[title=user.mk]{../cross/user.mk}
+
+\subsection{\file{qemu}: Запуск готовой системы в эмуляторе QEMU}
+
+\subsubsection{cross/qemu.mk}
+
+На этом этапе мы имеем только базовую систему, которую можно запустить в
+эмуляторе, или на реальном x86-ом компьютере.
+
+\lstinputlisting[title=qemu.mk]{../cross/qemu.mk}
+
+\subsection{Конфигурирование ядра}
+
+Отдельно рассмотрим опции конфигурации ядра. Эта информация поможет вам
+адаптировать конфигурацию ядра для вашей конкретной железки, создав собственные
+файлы конфигурации \file{config/hw/*.kernel}, \file{config/arch/*.kernel},
+\file{config/cpu/*.kernel}.
+
+Формирование результирующего конфигурационного файла см. \file{mk.rc}\ и секцию
+мейкфайла для пакета \file{kernel}.
+
+\subsection{Опции общие для всех вариантов сборки}
+
+\subsubsection{\file{rootfs}\ в \ram}
+
+\lstinputlisting[title=config/ramdisk.kernel]{../cross/config/ramdisk.kernel}
+
+\subsubsection{режим реального времени}
+
+\lstinputlisting[title=config/realtime.kernel]{../cross/config/realtime.kernel}
+
+\subsubsection{часы и таймеры}
+
+\lstinputlisting[title=config/clock.kernel]{../cross/config/clock.kernel}
+
+\subsubsection{вывод \file{printk}\ и отладка}
+
+\lstinputlisting[title=config/debug.kernel]{../cross/config/debug.kernel}
+
+\subsubsection{форматы исполняемых файлов}
+
+\lstinputlisting[title=config/binformats.kernel]{../cross/config/binformats.kernel}
+
+\subsubsection{носители данных}
+
+\lstinputlisting[title=config/storage.kernel]{../cross/config/storage.kernel}
+
+\subsubsection{файловые системы}
+
+\lstinputlisting[title=config/filesystems.kernel]{../cross/config/filesystems.kernel}
+
+\subsubsection{интернационализация}
+
+\lstinputlisting[title=config/i10n.kernel]{../cross/config/i10n.kernel}
+
+\subsubsection{мультимедиа}
+
+\lstinputlisting[title=config/media.kernel]{../cross/config/media.kernel}
+
+\subsection{Опции для архитектуры \file{i386}}
+
+\lstinputlisting[title=config/arch/i386.kernel]{../cross/config/arch/i386.kernel}
+
+\subsubsection{опции процессора \file{i486}}
+
+\lstinputlisting[title=config/cpu/i486.kernel]{../cross/config/cpu/i486.kernel}
+
+\subsubsection{опции для эмулятора \file{qemu386}}
+
+\lstinputlisting[title=config/hw/qemu386.kernel]{../cross/config/hw/qemu386.kernel}
+
 
 }{}
