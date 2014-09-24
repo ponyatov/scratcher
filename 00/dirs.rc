@@ -1,0 +1,2 @@
+user@builder: cd ~
+user@builder: ./mk.rc && make dirs
