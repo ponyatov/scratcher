@@ -1,3 +1,4 @@
 user@builder: cd ~
 user@builder: git clone --depth=1 -o gh \
-	https://github.com/ponyatov/cross.git cross
+	https://github.com/ponyatov/cross.git \
+	cross

@@ -62,6 +62,9 @@
 
 \newcommand{\ram}{RAM}
 
+\newcommand{\git}{\file{git}}
+\newcommand{\make}{\file{make}}
+
 % program listings & software using manuals
 
 \RequirePackage{menukeys}
@@ -79,3 +82,7 @@ showspaces=false
 }
 
 \newcommand{\file}[1]{\textbf{#1}}
+
+\newcommand{\lst}[3]{
+\lstinputlisting[title=\href{#2}{#1}]{#3}
+}
