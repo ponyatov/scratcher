@@ -197,7 +197,7 @@ Raspberry Pi, Apple,..}: параметры сборки ядра, выбор з
 
 \subsection{Пакет \file{dirs}: создание рабочих каталогов}
 
-\lstinputlisting[title=выполните:]{00/dirs.rc}
+\lstinputlisting{00/dirs.rc}
 
 В \file{dirs.mk}\ задается набор переменных каталогов, и прописан пакет
 \file{dirs}, который создает дерево каталогов:
@@ -216,12 +216,24 @@ Raspberry Pi, Apple,..}: параметры сборки ядра, выбор з
 
 \lst{config/mk/dirs.mk}{https://github.com/ponyatov/cross/raw/master/config/mk/dirs.mk}{../cross/config/mk/dirs.mk}
 
-% \subsubsection{версии пакетов}
-% 
-% В этой части прописаны версии пакетов.
-% 
-% \lstinputlisting[title=versions.mk]{../cross/versions.mk}
-% 
+\subsection{Версии пакетов}
+
+\begin{itemize}
+  \item библиотеки необходимые для сборки \file{gcc}
+  \item кросс-компилятор GNU: ассемблер, линкер и компилятор Си/С++
+  \item пакеты минимальной (core) em\linux-системы
+  \item библиотеки (много!)
+  \item архитектурно-зависимые пакеты (загрузчики, управление железом и т.п.)
+  \item эмуляторы: запуск привычных программ для различных платформ
+  \item комплект поддержки мультимедиа
+  \item графическая система \file{X Window}, оконный менеджер
+  \item набор базовых программ с GUI, включая
+  \item браузер
+  \item SDK: набор для on-board разработки/сборки ПО
+\end{itemize}
+
+\lst{config/mk/versions.mk}{https://github.com/ponyatov/cross/raw/master/config/mk/versions.mk}{../cross/config/mk/versions.mk}
+
 % \subsubsection{пакеты}
 % 
 % Здесь прописаны полные имена пакетов вместе с версиями. 
