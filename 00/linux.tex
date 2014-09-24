@@ -195,7 +195,7 @@ Raspberry Pi, Apple,..}: параметры сборки ядра, выбор з
 
 \lst{config/cpu/i486.mk}{https://github.com/ponyatov/cross/raw/master/config/cpu/i486.mk}{../cross/config/cpu/i486.mk}
 
-\subsection{Пакет \file{dirs}: создание рабочих каталогов}
+\subarticle{Пакет \file{dirs}: создание рабочих каталогов}
 
 \lstinputlisting{00/dirs.rc}
 
@@ -216,7 +216,7 @@ Raspberry Pi, Apple,..}: параметры сборки ядра, выбор з
 
 \lst{config/mk/dirs.mk}{https://github.com/ponyatov/cross/raw/master/config/mk/dirs.mk}{../cross/config/mk/dirs.mk}
 
-\subsection{Версии пакетов}
+\subarticle{Версии пакетов}
 
 \begin{itemize}
   \item библиотеки необходимые для сборки \file{gcc}
@@ -238,12 +238,19 @@ Raspberry Pi, Apple,..}: параметры сборки ядра, выбор з
 
 \lst{config/mk/packages.mk}{https://github.com/ponyatov/cross/raw/master/config/mk/packages.mk}{nul}%../cross/config/mk/packages.mk}
 
-% \subsubsection{команды}
-% 
-% Макросы команд, используются далее:
-% 
-% \lstinputlisting[title=commands.mk]{../cross/commands.mk}
-% 
+\subarticle{Макросы команд}
+
+\begin{itemize}
+  \item{\file{B*}} относятся к сборке BUILD-пакетов
+  \item{\file{T*}} относятся к сборке TARGET-пакетов
+  \item{\file{MAKE}} вложенный вызов многопоточного \make, сборка
+  \item{\file{INSTALL}} установка собранного пакета
+  \item{\file{WGET}} загрузка файлов по http(s)/ftp
+  \item{\file{CCACHE}} акселератор компилятора \file{gcc}
+\end{itemize}
+
+\lst{config/mk/commands.mk}{https://github.com/ponyatov/cross/raw/master/config/mk/commands.mk}{../cross/config/mk/commands.mk}
+
 % \subsubsection{\file{*clean}: очистка дерева проекта}
 % 
 % Для каталогов, прописанных в \file{/etc/fstab}\ как \file{tmpfs}\ (файловая
